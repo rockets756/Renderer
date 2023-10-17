@@ -10,6 +10,8 @@ double pitch = 0.0;
 double yaw = -90.0;
 
 void mouse_callback(__attribute__((unused)) GLFWwindow* window, double xPos, double yPos) {
+    if (glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_NORMAL) return;
+    
     double XOffset = xPos - lastX;
     double YOffset = lastY - yPos; // reversed since y-coordinates range from bottom to top
     lastX = xPos;

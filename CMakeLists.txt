@@ -19,12 +19,17 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders/fragment.glsl DESTINATION ${CMAKE_
 add_executable(${PROJECT_NAME}
         main.cpp
         glad/glad.c
+        imgui/imgui.cpp imgui/imgui_demo.cpp imgui/imgui_draw.cpp imgui/imgui_impl_glfw.cpp imgui/imgui_impl_opengl3.cpp imgui/imgui_tables.cpp imgui/imgui_widgets.cpp
         window/window.cpp window/window.h
         shaders/shaders.cpp
         camera/camera.cpp camera/camera.h
         input/keyboard.cpp input/keyboard.h
-        input/mouse.cpp input/mouse.h)
+        input/mouse.cpp input/mouse.h
+        textures/textures.cpp textures/textures.h textures/granite.c textures/brick.c
+        debug/debug.cpp debug/debug.h)
 
 target_link_libraries(${PROJECT_NAME} glfw)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY} ${GLUT_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
+
+add_compile_options(-fpermissive)

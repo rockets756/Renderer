@@ -12,7 +12,7 @@ void key_callback(GLFWwindow* window, int key, __attribute__((unused)) int scanc
     if (action == GLFW_PRESS) {
         switch (key) {
             case GLFW_KEY_ESCAPE: {
-                glfwSetWindowShouldClose(window, true);
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
                 break;
             }
             case GLFW_KEY_P: {
@@ -57,8 +57,10 @@ void key_callback(GLFWwindow* window, int key, __attribute__((unused)) int scanc
                 move_down();
                 break;
             /* End input keys. */
-            default:
+            default: {
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                 break;
+            }
         }
     }
     /************************************************** End key press logic **************************************************/

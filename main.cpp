@@ -1,10 +1,18 @@
+// imgui must be included before glfw and glad
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+// glad must be included before glfw
 #include <glad.h>
 #include <GLFW/glfw3.h>
+// iostream is included for debugging
 #include <iostream>
 
+#include "debug/debug.h"
 #include "window/window.h"
 #include "shaders/shaders.h"
 #include "camera/camera.h"
+#include "textures/textures.h"
 
 #define FPS (1 / deltaTime)
 #define NUMBER_OF_VERTICES (sizeof(vertices) / sizeof(float) / 6)
@@ -17,10 +25,10 @@ double deltaTime;
 
 float vertices[] = {
         // positions          // colors           // texture coords
-        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f, // top right
-        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f  // top left
+        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left
 };
 unsigned int indices[] = {
         0, 1, 3, // first triangle
@@ -65,10 +73,12 @@ int main() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Set vertex attribute pointers
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) nullptr);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) (3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -78,11 +88,18 @@ int main() {
     // Set background color
     glClearColor(WINDOW_STARTING_COLOR);
 
+    load_texture(BRICK);
+
+    // Imgui implementation
+    init_imgui(window);
+
     // Main loop
     while(!glfwWindowShouldClose(window)) {
         timeI = glfwGetTime();
         printf("FPS: %f\n", FPS);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        update_imgui();
 
         // Calculate camera
         update_camera(shader_program, (float) deltaTime);
@@ -91,6 +108,7 @@ int main() {
         glUseProgram(shader_program);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        render_imgui();
 
         // Swap buffers (display what we have rendered to the screen)
         glfwSwapBuffers(window);
@@ -100,6 +118,7 @@ int main() {
     }
 
     // Free resources and close
+    shutdown_imgui();
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
