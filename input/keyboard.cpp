@@ -58,7 +58,6 @@ void key_callback(GLFWwindow* window, int key, __attribute__((unused)) int scanc
                 break;
             /* End input keys. */
             default: {
-                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                 break;
             }
         }

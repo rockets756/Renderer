@@ -1,7 +1,5 @@
 #include "textures.h"
-
-#include <stdio.h>
-#include <glad.h>
+#include "glad.h"
 #include "image.h"
 
 unsigned int load_texture(TextureType texture) {

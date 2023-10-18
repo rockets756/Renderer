@@ -4,7 +4,7 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-#include "../textures/textures.h"
+#include "../rendering/textures/textures.h"
 
 using namespace ImGui;
 
@@ -27,7 +27,7 @@ void render_imgui() {
     // TextureType window
     Begin("Textures");
     if (Button("Brick")) load_texture(BRICK);
-    if (Button("Granite")) load_texture((GRANITE));
+    if (Button("Granite")) load_texture(GRANITE);
     End();
 
     Render();

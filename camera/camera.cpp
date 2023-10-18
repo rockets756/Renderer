@@ -26,18 +26,25 @@ const vec3 up = vec3(0.0f, 1.0f, 0.0f);
 mat4 view = mat4(1);
 mat4 proj = mat4(1);
 
+vec3 cameraDirection = normalize(cameraPos - cameraTarget);
+vec3 cameraRight = normalize(cross(up, cameraDirection));
+vec3 cameraUp = cross(cameraDirection, cameraRight);
+
 void update_camera(unsigned int shaderProgram, float deltaTime) {
-    vec3 cameraDirection = normalize(cameraPos - cameraTarget);
-    vec3 cameraRight = normalize(cross(up, cameraDirection));
-    vec3 cameraUp = cross(cameraDirection, cameraRight);
 
     // Update camera position FIXME: Create better algorithm that doesn't use if statements
-    if (cameraMovement.x == 1) cameraPos += normalize(cross(cameraFront, cameraUp)) * CAMERA_SPEED;
-    else if (cameraMovement.x == -1) cameraPos -= normalize(cross(cameraFront, cameraUp)) * CAMERA_SPEED;
-    if (cameraMovement.z == 1) cameraPos += CAMERA_SPEED * cameraFront;
-    else if (cameraMovement.z == -1) cameraPos -= CAMERA_SPEED * cameraFront;
-    if (cameraMovement.y == 1) cameraPos.y += CAMERA_SPEED;
-    else if (cameraMovement.y == -1) cameraPos.y -= CAMERA_SPEED;
+    if (cameraMovement.x == 1)
+        cameraPos += normalize(cross(cameraFront, cameraUp)) * CAMERA_SPEED;
+    else if (cameraMovement.x == -1)
+        cameraPos -= normalize(cross(cameraFront, cameraUp)) * CAMERA_SPEED;
+    if (cameraMovement.z == 1)
+        cameraPos += CAMERA_SPEED * cameraFront;
+    else if (cameraMovement.z == -1)
+        cameraPos -= CAMERA_SPEED * cameraFront;
+    if (cameraMovement.y == 1)
+        cameraPos.y += CAMERA_SPEED;
+    else if (cameraMovement.y == -1)
+        cameraPos.y -= CAMERA_SPEED;
 
     // Update camera direction
     direction.x = cos(radians(getYaw())) * cos(radians(getPitch()));
@@ -49,7 +56,6 @@ void update_camera(unsigned int shaderProgram, float deltaTime) {
     view = lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
     /* Probably not the best place to do this but here we are sending the numbers to the vertex shader for the final calculations. */
-    /* May need to change the location number depending on weather or not we are starting at 0 or 1. */
     int viewLoc = glGetUniformLocation(shaderProgram, "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
     int projLoc = glGetUniformLocation(shaderProgram, "proj");

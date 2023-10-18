@@ -21,6 +21,7 @@ GLFWwindow* createWindow() {
     glfwSetKeyCallback(window, key_callback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     glViewport(0, 0, WINDOW_STARTING_WIDTH, WINDOW_STARTING_HEIGHT);
     return window;
 }
