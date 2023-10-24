@@ -11,6 +11,8 @@ Ignores extra spaces.
 Ignores lines that start with // for comments.
 
 Stuff to do:
+* Add normals to the vertex shader properly
+  * Add normals to the model files
 * Add multiple object rendering
 * Add lighting
 * Add smoothable models like spheres
