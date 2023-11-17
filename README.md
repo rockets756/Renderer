@@ -1,6 +1,8 @@
 # Renderer
 The renderer that has yet to be named.
 
+currently WINDOWS ONLY
+
 If you want to change the glsl version. You must change the values in the vertex shader, fragment shader, main.cpp, and debug.cpp.
 
 ## Model Files
